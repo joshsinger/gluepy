@@ -3,7 +3,10 @@ Created on 7 Sep 2020
 
 @author: joshsinger
 '''
-import re
+import logging
+
+logger = logging.getLogger('fasta_utils')
+//logger.setLevel(logging.INFO)
 
 class FastaException(Exception):
     pass
@@ -23,12 +26,16 @@ def fasta_lines_to_dict(lines):
     fasta_dict = {} # dictionary mapping seq_id to FastaSequence
     # nt_char_sections contains the whitespace-free nucleotide lines of the current sequence
     seq_id, description, nt_char_list = None, None, []
-    line_number = 1;
+    line_number = 1
+    seqs_added = 0
     
     for line in lines:
         if line.startswith('>'):
             if(not seq_id is None):
                 add_fasta_sequence(fasta_dict, seq_id, description, nt_char_list)
+                seqs_added += 1
+                if(seqs_added % 100 == 0):
+                    logger.info("Sequences added "+str(seqs_added))
                 seq_id, description, nt_char_list = None, None, []
             first_spc_idx = line.find(' ')
             if(first_spc_idx == -1):
@@ -41,6 +48,8 @@ def fasta_lines_to_dict(lines):
         line_number += 1
     if(not seq_id is None):
         add_fasta_sequence(fasta_dict, seq_id, description, nt_char_list)
+        seqs_added += 1
+    logger.info("Total sequences added "+str(seqs_added))
     return fasta_dict
 
 # normalise NT characters in line, capitalising, removing whitespace
@@ -53,10 +62,12 @@ def add_nt_line(nt_char_list, line, line_number):
             nt_char_list.append(char.upper())
         elif "Uu".find(char) != -1:
             nt_char_list.append("T")    
+        elif char == '?': # appears in the COGUK phylogenetics alignment 
+            nt_char_list.append("N")    
         elif char.isspace():
             pass
         else:
-            raise FastaException("Illegal character '"+char+"' in FASTA line "+line_number);
+            raise FastaException("Illegal character '"+char+"' in FASTA line "+str(line_number));
     
 def add_fasta_sequence(fasta_dict, seq_id, description, nt_char_list):
     if(seq_id in fasta_dict):
