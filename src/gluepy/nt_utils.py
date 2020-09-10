@@ -25,20 +25,22 @@ Created on 8 Sep 2020
           N                    A C G T U                            Nucleic acid
 '''   
      
+all_ambig_nts = "ACGTRYKMSWBDHVN"     
+    
 ambig_nt_to_concrete_nts = {}
 
-ambig_nt_to_concrete_nts["A"] = ["A"]
-ambig_nt_to_concrete_nts["C"] = ["C"]
-ambig_nt_to_concrete_nts["G"] = ["G"]
-ambig_nt_to_concrete_nts["T"] = ["T"]
-ambig_nt_to_concrete_nts["R"] = ["A", "G"]
-ambig_nt_to_concrete_nts["Y"] = ["C", "T"]
-ambig_nt_to_concrete_nts["K"] = ["G", "T"]
-ambig_nt_to_concrete_nts["M"] = ["A", "C"]
-ambig_nt_to_concrete_nts["S"] = ["C", "G"]
-ambig_nt_to_concrete_nts["W"] = ["A", "T"]
-ambig_nt_to_concrete_nts["B"] = ["C", "G", "T"]
-ambig_nt_to_concrete_nts["D"] = ["A", "G", "T"]
-ambig_nt_to_concrete_nts["H"] = ["A", "C", "T"]
-ambig_nt_to_concrete_nts["V"] = ["A", "C", "G"]
-ambig_nt_to_concrete_nts["N"] = ["A", "C", "G", "T"]
+ambig_nt_to_concrete_nts["A"] = "A"
+ambig_nt_to_concrete_nts["C"] = "C"
+ambig_nt_to_concrete_nts["G"] = "G"
+ambig_nt_to_concrete_nts["T"] = "T"
+ambig_nt_to_concrete_nts["R"] = "AG"
+ambig_nt_to_concrete_nts["Y"] = "CT"
+ambig_nt_to_concrete_nts["K"] = "GT"
+ambig_nt_to_concrete_nts["M"] = "AC"
+ambig_nt_to_concrete_nts["S"] = "CG"
+ambig_nt_to_concrete_nts["W"] = "AT"
+ambig_nt_to_concrete_nts["B"] = "CGT"
+ambig_nt_to_concrete_nts["D"] = "AGT"
+ambig_nt_to_concrete_nts["H"] = "ACT"
+ambig_nt_to_concrete_nts["V"] = "ACG"
+ambig_nt_to_concrete_nts["N"] = "ACGT"
