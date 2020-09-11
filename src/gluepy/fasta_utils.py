@@ -5,6 +5,7 @@ Created on 7 Sep 2020
 '''
 import logging
 
+logging.basicConfig()
 logger = logging.getLogger('fasta_utils')
 # logger.setLevel(logging.INFO)
 
