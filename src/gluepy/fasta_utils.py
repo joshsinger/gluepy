@@ -18,10 +18,15 @@ class FastaSequence:
         self.nt_chars = nt_chars
         self.description = description
 
+
+
 def fasta_file_to_dict(path):
     with open(path) as file_object:
         lines = file_object.readlines()
     return fasta_lines_to_dict(lines)
+
+def fasta_bytes_to_dict(fasta_bytes):
+    return fasta_lines_to_dict(fasta_bytes.decode("utf-8").splitlines())
         
 def fasta_lines_to_dict(lines):
     fasta_dict = {} # dictionary mapping seq_id to FastaSequence

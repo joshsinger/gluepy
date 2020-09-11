@@ -6,6 +6,7 @@ Created on 10 Sep 2020
 import logging
 from gluepy.nt_utils import all_ambig_nts, ambig_nt_to_concrete_nts, concrete_nts_to_ambig_nt
 from gluepy.aa_utils import aa_to_concrete_nt_triplets, concrete_nt_triplet_to_aa
+from gluepy import genome_model
 
 logging.basicConfig()
 logger = logging.getLogger('translation_utils')
@@ -98,3 +99,5 @@ for ambig1 in all_ambig_nts:
             ambig_triplet = ''.join([ambig1, ambig2, ambig3])
             amb_tripl_to_result[ambig_triplet] = result_for_ambig_triplet(ambig_triplet)
 
+
+    
