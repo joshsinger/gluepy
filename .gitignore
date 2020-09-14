@@ -2,3 +2,4 @@ src/gluepy/__pycache__
 test_src/gluepy/__pycache__
 .metadata
 src/cov/__pycache__
+test_src/cov/__pycache__
