@@ -87,3 +87,7 @@ def add_fasta_sequence(fasta_dict, seq_id, description, file_str):
     nt_chars = file_str.getvalue()
     fasta_dict[seq_id] = FastaSequence(seq_id, description, nt_chars)
     
+# pull a single nucleotide character from a string, based on a one-based coordinate
+def ob_nt_char(nt_chars, ob_coord):
+    return nt_chars[ob_coord-1]
+

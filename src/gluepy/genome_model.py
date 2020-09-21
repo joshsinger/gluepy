@@ -6,6 +6,7 @@ Created on 7 Sep 2020
 import logging
 from gluepy.aa_utils import DeletedAminoAcid, LabeledAminoAcid
 from gluepy.translation import result_for_ambig_triplet
+from gluepy.ob_range import OneBasedRange
 
 logging.basicConfig()
 logger = logging.getLogger('genome_model')
@@ -58,4 +59,8 @@ class GenomeRegion:
             if ob_length_sum % 3 != 0:
                 raise GenomeModelException("Total length of one-based ranges for region '"+name+"' is not a multiple of 3")
         
+    def spanning_range(self):
+        return OneBasedRange(min([ob_range.start for ob_range in self.one_based_ranges]),
+                max([ob_range.end for ob_range in self.one_based_ranges]))
+    
 
