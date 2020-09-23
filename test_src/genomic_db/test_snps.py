@@ -8,7 +8,7 @@ import unittest
 from gluepy.genome_model import GenomeModel, GenomeRegion
 from gluepy.ob_range import OneBasedRange
 from gluepy.fasta_utils import FastaSequence
-from cov_db.snps import snps_generator
+from genomic_db.snps import snps_generator
 
 
 class Test(unittest.TestCase):

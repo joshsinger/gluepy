@@ -19,6 +19,7 @@ class GenomeModel:
     def __init__(self, reference_nts, genome_regions):
         self.reference_nts = reference_nts
         self.genome_regions = genome_regions
+        pass
 
     def check_almt_row(self, almt_row):
         if len(almt_row) != len(self.reference_nts):
