@@ -4,7 +4,7 @@ Created on 8 Sep 2020
 @author: joshsinger
 '''
 import unittest
-from gluepy.translation import amb_tripl_to_result
+from gluepy.aa_utils import amb_tripl_to_result
 
 class Test(unittest.TestCase):
     # Example 1

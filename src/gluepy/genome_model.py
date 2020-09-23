@@ -4,9 +4,10 @@ Created on 7 Sep 2020
 @author: joshsinger
 '''
 import logging
-from gluepy.aa_utils import DeletedAminoAcid, LabeledAminoAcid
-from gluepy.translation import result_for_ambig_triplet
+
+from gluepy.aa_utils import AminoAcid, translate_region
 from gluepy.ob_range import OneBasedRange
+
 
 logging.basicConfig()
 logger = logging.getLogger('genome_model')
@@ -16,11 +17,6 @@ class GenomeModelException(Exception):
     pass
 
 class GenomeModel:
-    def __init__(self, reference_nts, genome_regions):
-        self.reference_nts = reference_nts
-        self.genome_regions = genome_regions
-        pass
-
     def check_almt_row(self, almt_row):
         if len(almt_row) != len(self.reference_nts):
             raise GenomeModelException("Alignment row length differs from genome model reference length")
@@ -28,27 +24,31 @@ class GenomeModel:
     def get_region(self, region_name):
         return next(g_region for g_region in self.genome_regions if g_region.name == region_name)
 
+    def get_regions(self):
+        return self.genome_regions
+
     def extract_region(self, almt_row, region_name):
         self.check_almt_row(almt_row)
         g_region = self.get_region(region_name)
         return ''.join([ob_range.pull_from_str(almt_row) for ob_range in g_region.one_based_ranges])
+    
+    def __init__(self, reference_nts, genome_regions):
+        self.reference_nts = reference_nts
+        self.genome_regions = genome_regions
+        # list of coding region names
+        c_reg_names = [c_region.name for c_region in genome_regions if c_region.is_coding]
         
-    def translate_region(self, almt_row, region_name):
-        g_region = self.get_region(region_name)
-        if not g_region.is_coding:
-            raise GenomeModelException("Cannot translate non-coding region "+region_name)
-        extracted_region = self.extract_region(almt_row, region_name)
-        result = []
-        i = 0
-        while i < len(extracted_region):
-            codon_label = str(i)
-            am_nts = extracted_region[i:i+3]
-            if am_nts.find("-") != -1:
-                result.append(DeletedAminoAcid(region_name, codon_label, am_nts))
-            else:
-                result.append(LabeledAminoAcid(region_name, codon_label, result_for_ambig_triplet(am_nts)))
-            i += 3
-        return result
+        # build dictionary mapping coding region name to reference NTs of that region
+        self.ref_regions = {r_name: extracted_region for (r_name, extracted_region) in 
+            map(lambda c_reg_name: (c_reg_name, self.extract_region(self.reference_nts, c_reg_name)),
+                c_reg_names)}
+        
+        # build dictionary mapping coding region name to AA translation of that region
+        self.ref_translations = {r_name: translation for (r_name, translation) in 
+             map(lambda c_reg_name : (c_reg_name, AminoAcid.list_to_string(
+                 translate_region(self.ref_regions[c_reg_name]))), 
+                 c_reg_names)}
+
 
 class GenomeRegion:
     def __init__(self, name, is_coding, one_based_ranges):

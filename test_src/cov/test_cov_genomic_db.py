@@ -3,7 +3,6 @@ Created on 23 Sep 2020
 
 @author: joshsinger
 '''
-import pickle
 import unittest
 
 from cov.cov_genome_model import build_cov_genome_model
@@ -17,9 +16,10 @@ class Test(unittest.TestCase):
         almt_file_path = "/Users/joshsinger/coguk/cog_2020-09-07_all_alignment.fasta"
         output_dir = "/Users/joshsinger/coguk/graphdb_csvs"
         genome_model = build_cov_genome_model()
-        
-        pickle.dumps(genome_model)
-        build_db(almt_file_path, genome_model, output_dir)
+        snps_region = "CSR"
+        num_workers = 16
+        aa_regions = [c_region.name for c_region in genome_model.get_regions() if c_region.is_coding]
+        build_db(almt_file_path, genome_model, snps_region, aa_regions, num_workers, output_dir)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testBuildCovGenomicDb']
