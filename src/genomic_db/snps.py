@@ -11,9 +11,9 @@ from gluepy.fasta_utils import ob_nt_char
 from gluepy.nt_utils import ambig_nt_to_concrete_nts
 
 '''
-Given a genome model and an alignment row, return a generator of pairs,
-each pair being (<SNP_id>, <is_ambig>)
-where <SNP_id> is e.g. C14805T and <is_ambig> is a boolean indicating whether the SNP was generated as a result of a 
+Given a genome model and an alignment row, return a generator of tuples,
+each tuple being (C, 14805, T, False)
+which would mean NSP C14805T, with a boolean indicating whether the SNP was generated as a result of a 
 non-N ambiguity code
 The SNPs are relative to the reference sequence and region_name
 '''
@@ -34,8 +34,7 @@ def snps_at_coord(ref_nt_chars, qry_nt_chars, ref_nt_coord):
     ref_nt_char = ob_nt_char(ref_nt_chars, ref_nt_coord)
     if qry_nt_char != '-' and qry_nt_char != 'N' and qry_nt_char != ref_nt_char:
         qry_concrete_nts = ambig_nt_to_concrete_nts[qry_nt_char]
+        is_ambig = len(qry_concrete_nts) > 1
         for qry_concrete_nt in qry_concrete_nts:
             if qry_concrete_nt != ref_nt_char:
-                snp_id = ref_nt_char + str(ref_nt_coord) + qry_concrete_nt
-                is_ambig = len(qry_concrete_nts) > 1
-                yield (snp_id,is_ambig)
+                yield (ref_nt_char, ref_nt_coord, qry_concrete_nt, is_ambig)

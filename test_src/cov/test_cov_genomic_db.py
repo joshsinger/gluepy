@@ -19,7 +19,9 @@ class Test(unittest.TestCase):
         snps_region = "CSR"
         num_workers = 16
         aa_regions = [c_region.name for c_region in genome_model.get_regions() if c_region.is_coding]
-        build_db(almt_file_path, genome_model, snps_region, aa_regions, num_workers, output_dir)
+        seq_id_mapper = lambda old_id: old_id.split("/")[1]
+        build_db(almt_file_path, seq_id_mapper, 
+                 genome_model, snps_region, aa_regions, num_workers, output_dir)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testBuildCovGenomicDb']

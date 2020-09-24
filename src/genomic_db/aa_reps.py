@@ -6,9 +6,9 @@ Created on 23 Sep 2020
 
 
 '''
-Given a genome model and a coding region name, return a generator of pairs representing definite AA replacements
-each pair being (<AA_rep_id>, <is_unique>)
-where <AA_rep_id> is e.g. S:D614G and <is_unique> is a boolean indicating whether the AA replacement is the unique definite AA
+Given a genome model and a coding region name, return a generator of tuples representing definite AA replacements
+e.g. (S, D, 614, G, True)
+which would be S:D614G plus a boolean indicating whether the AA replacement is the unique definite AA
 at that location. AA replacements are relative to the reference sequence
 '''
 
@@ -44,4 +44,4 @@ def aa_reps_at_coord(region_name, ref_region_nts, ref_region_aa, qry_region_nts,
     is_unique = ( len(qry_ambig_triplet_result.definite_aas) == 1 )
     for definite_aa in qry_ambig_triplet_result.definite_aas:
         if definite_aa != ref_region_aa:
-            yield ("{}:{}{}{}".format(region_name,ref_region_aa,codon_label,definite_aa), is_unique)
+            yield (region_name, ref_region_aa, codon_label, definite_aa, is_unique)

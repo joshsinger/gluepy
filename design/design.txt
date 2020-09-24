@@ -1,0 +1,40 @@
+All nodes to have natural IDs
+
+
+Node labels + their properties
+
+Sequence
+	sampleID		String:ID
+	sampleDate		Date
+Lineage
+	name			String:ID
+AdminDistrict
+	name			String:ID
+Country
+	name			String:ID
+Snp
+	name			String:ID
+	refNucleotide	String
+	refCoordinate	int
+	snpNucleotide	String
+AaReplacement
+	name			String:ID
+	refAminoAcid	String
+	codonLabel		int
+	repAminoAcid	String
+ViralProtein
+	name			String:ID
+
+Relationship labels, their node types + properties
+
+Sequence -[ASSIGNED_TO]-> Lineage
+Lineage -[PARENT_OF]-> Lineage
+Lineage -[CHILD_OF]-> Lineage
+Sequence -[SAMPLED_IN]-> AdminDistrict
+AdminDistrict -[PART_OF]-> Country
+AaRep -[IN_PROTEIN]-> ViralProtein
+Sequence -[CONTAINS_SNP]-> Snp
+	isAmbiguous		boolean
+Sequence -[CONTAINS_AA_REP]-> AaReplacement
+	isUnique		boolean
+
